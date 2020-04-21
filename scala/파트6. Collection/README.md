@@ -148,10 +148,142 @@ object LearnScala {
 ```
 
 # Map
+- ```Map(key1 -> value1, key2 -> value2, ...)``` or ```Map(Tuple2, ...)```
+- 기본이 ```scala.collection.immutable.Map```
+- Set과 마찬가지로 Map4 이후엔 ```HashMap```
+- 키 중복 x, 순서 x
+```scala
+#!/usr/bin/env scala
+
+
+object LearnScala {
+  def main(args: Array[String]): Unit = {
+    // 1. Map[String, Int]
+    val map1 = Map("one" -> 1, "two" -> 2, "three" -> 3)
+    println(map1)  // Map(one -> 1, two -> 2, three -> 3)
+
+    // Map[Any, Any]
+    val map2 = Map(1 -> "one", "2" -> 2.0, "three" -> false)
+
+    // 2. 중복된 키가 있으면 마지막 값 사용
+    println(Map('a' -> 1, 'a' -> 2))  // Map(a -> 2)
+
+    // 3. 키가 없으면 NoSuchElementException 발생
+    // val fourExists = map1("four")  ====> exception
+    // 아래는 체크방법
+    println(fourExists.get("four").isDefined)  // false
+
+    // 4. '++' 연산자로 Map을 concat가능, 키가 중복되면 마지막 값으로 결정
+    val concatenated = map1 ++ map2
+    println(concatenated)  // Map(three -> false, 1 -> one, two -> 2, 2 -> 2.0, one -> 1)
+
+    // 5. find (List, Set과 같은 형태)
+    val personMap = Map(("솔라",1), ("문별",2), ("휘인",3))
+    
+    //def findByName(name: String) = personMap.find(_._1 == name).getOrElse(("화사", 4))  // name이 있으면 튜플 리턴
+    def findByName(name: String) = personMap.getOrElse(name, 4)  // name key가 value 리턴, 없으면 4 리턴
+
+    val findSolar = findByName("솔라")  // return값은  
+    val findSun = findByName("태양")    //   Int이다.
+
+    println(findSolar, findSun)  // 1, 4
+  }
+}
+```
 
 # Array/List/Set/Map의 타입
+- 엘러먼트들은 어떤 타입이든 사용 가능.
+- 최종 타입 최상위 타입으로 결정
+```scala
+#!/usr/bin/env scala
+
+
+object LearnScala {
+  class Animal()
+  class Dog() extends Animal()
+
+  def main(args: Array[String]): Unit = {
+    // Array
+    // val array: Array[Dog] = Array(new Animal(), new Dog())  =====> error
+    val array: Array[Animal] = Array(new Animal(), new Dog())
+
+    // List
+    val list: List[Animal] = List(new Animal(), new Dog())
+
+    // Set
+    val set: Set[Animal] = Set(new Animal(), new Dog())
+
+    // Map
+    val map: Map[String, Animal] = Map("Animal" -> new Animal(), "Dog" -> new Dog())
+  }
+}
+```
 
 # 변경할 수 있는(Mutable) Collection
+- 스칼라는 immutable 권장, 그래서 기본이 immutable
+- 필요한 경우 Mutable 사용 가능
+- ArrayBuffer는 자바의 ```java.util.ArrayList```와 유사
+- ListBuffer는 자바의 ```java.util.LinkedList```와 유사
+- Mutable Collection을 사용할 때는 앞에 ```mutable```을 붙여야 됨.
+  ```e.g. (mutable.ArrayBuffer, mutable.ListBuffer, mutable.Set, mutable.Map)```
+```scala
+#!/usr/bin/env scala
+
+
+import scala.collection.mutable
+
+object LearnScala {
+  def main(args: Array[String]): Unit = {
+    // 1. 배열로 구현되는 ArrayBuffer
+    val arrayBuffer = mutable.ArrayBuffer(1, 2, 3)  // arrayBuffer: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 2, 3)
+    arrayBuffer += 4
+    arrayBuffer -= 1
+    arrayBuffer ++= List(5, 6, 7)
+    println(arrayBuffer)  // ArrayBuffer(2, 3, 4, 5, 6, 7)
+
+    // 2. Linked List로 구현되는 ListBuffer
+    val listBuffer = mutable.ListBuffer("a", "b", "c")
+    println(listBuffer)  // ListBuffer(a, b, c)
+
+    // 3. Mutable Set
+    val hashSet = mutable.Set(0.1, 0.2, 0.3)  // hashSet: scala.collection.mutable.Set[Double] = HashSet(0.3, 0.1, 0.2)
+    hashSet ++= mutable.Set(5)
+    println(hashSet)  // HashSet(0.3, 0.1, 0.2, 5.0)
+
+    // 4. Mutable Map
+    val hashMap = mutable.Map("one" -> 1, "two" -> 2)  // hashMap: scala.collection.mutable.Map[String, Int] = HashMap(one -> 1, two -> 2)
+    hashMap ++= Map("five" -> 5, "six" -> 6)
+    println(hashMap)  // HashMap(one -> 1, six -> 6, five -> 5, two -> 2)
+  }
+}
+```
 
 # 변경할 수 없는(Immutable) Collection에서의 var와 val
+- Immutable Collection이 ```var```로 선언된 경우 ```+=```나 ```-=```를 사용가능
+- collection자체는 immutable이므로 새로운 collection이 만들어져 ```var```변수에 할당되는 것
+- Mutable Collection의경우는 ```+=```, ```-=```연산자가 메서드로 작동
+```scala
+#!/usr/bin/env scala
 
+import scala.collection.mutable
+
+object LearnScala {
+  def main(args: Array[String]): Unit = {
+    // 1. Immutable Collection이 var에 할당
+    var immutableSet = Set(1, 2, 3)
+
+    // 새로운 Set을 만들어 immutableSet에 할당
+    immutableSet += 4
+    //same As
+    //immutableSet = immutableSet + 4
+    println(immutableSet)  // Set(1, 2, 3, 4)
+
+    // 2. Mutable Collection
+    val mutableSet = mutable.Set(1, 2, 3)
+    mutableSet += 4
+    //same As
+    // mutable.+=(4)
+    println(mutableSet)  // HashSet(1, 2, 3, 4)
+  }
+}
+```
