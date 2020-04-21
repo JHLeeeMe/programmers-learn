@@ -1,4 +1,4 @@
-# Create Range
+# Range
 ```scala
 #!/usr/bin/env scala
 
@@ -31,6 +31,54 @@ object LearnScala {
     println(doubleIt3)  // Vector(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
     println(doubleIt2)  // Vector(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
     println(doubleIt1)  // Vector(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
+  }
+}
+```
+
+# 숫자 다루기
+```scala
+#!/usr/bin/env scala
+
+
+object LearnScala {
+  def main(args: Array[String]): Unit = {
+    val num = -5
+    val numAbs = num.abs  // 절댓값
+    val max5or7 = numAbs.max(7)  // 5(numAbs)와 7 사이 최댓값
+    val min5or7 = numAbs.min(7)  // 5(numAbs)와 7 사이 최솟값
+
+    println(num)  // -5
+    println(numAbs)  // 5
+    println(max5or7)  // 7
+    println(min5or7)  // 5
+  }
+}
+```
+
+# 문자 다루기
+```scala
+#!/usr/bin/env scala
+
+
+object LearnScala {
+  def main(args: Array[String]): Unit = {
+    // 1. reverse: 뒤집기
+    val reverse = "Scala".reverse
+    println(reverse)  // "alacS"
+
+    // 2. capitalize: 첫글자를 대문자로
+    val cap = "scala".capitalize
+    println(cap)  // "Scala"
+
+    // 3. *: 반복
+    val multi1 = "Scala! " * 7
+    val multi2 = "Scala! ".*(7)
+    println(multi1)  // "Scala! Scala! Scala! Scala! Scala! Scala! Scala!"
+    println(multi2)  // "Scala! Scala! Scala! Scala! Scala! Scala! Scala!"
+
+    // 4. toInt: 정수로 변환
+    val int = "123".toInt
+    println(int)  // 123
   }
 }
 ```
