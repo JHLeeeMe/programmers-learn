@@ -27,6 +27,7 @@ object LearnScala {
 
     val a = Array(1, 2, 3)
     val b = List(4, 5, 6)
+    
     // 4. '++' 연산자: 앞의 데이터형으로 이어붙임 
     a ++ b  // Array(1, 2, 3, 4, 5, 6)
     
@@ -41,6 +42,7 @@ object LearnScala {
     println(diffArray)  // Array(1, 4)
 
     val personArray = Array(("솔라", 1), ("문별", 2), ("휘인", 3))
+    
     // 6. find
     // 조건에 맞으면 검색 중단, getOrElse는 일치하는 값이 없을 경우 넘겨줄 기본 값
     // getOrElse가 없으면 기본값은 None
